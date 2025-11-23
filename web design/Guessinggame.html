@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        body{
+            width: 50%;
+            max-width: 800px;
+            min-width: 480px;
+            margin: 0 auto;
+        }
+        .form input[type='number']{
+            width: 200px;
+        }
+        .lastresult{
+            color: white;
+            padding: 3px;
+        }
+    </style>    
+</head>
+
+<body>
+    
+    <h1>This is a numbers guessing game</h1>
+    <div class="form">
+        <label for="guessfield"> Enter a guess: </label>
+        <input type="number" id="guessfield" class="guessfield" />
+        <input type="submit" id="Submit guess" class="guessSubmit" />
+    </div>
+    <div class="resultParas">
+        <p class="guesses"></p>
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+    </div>
+    <script>
+        // javascript goes here
+            //intial variables to start with
+                    let random_number = Math.floor(Math.random() * 100) + 1;
+                    const guesses = document.querySelector(".guesses");
+                    const lastResult = document.querySelector(".lastresult")
+                    const lowOrHi = document.querySelector(".loworhigh");
+            
+                    const guessSubmit = document.querySelector(".guesssubmit");
+                    const guessField = document.querySelector(".guessField");
+        
+                    let guessCount = 1;
+                    let resetButton; 
+                    
+                
+                    function checkguess(){
+                        const userguess = Number(guessField.value);
+                        if (guessCount === 1){
+                            guesses.textContent = "previous guesses";
+                        }
+                        guesses.textContent = `${guesses.textContent} ${userguess}`;
+                        if (userguess === random_number){
+                            lastResult.textContent = "congratulations! you got it right";
+                            lastResult.style.backgroundColor = "green"
+                            lowOrHi.textContent = "";
+                        }
+                        else if(guesscount === 10){
+                            lastResult.textContent = "!!!GAME OVER!!!";
+                            loworhi.textContent = "";
+                            setGameOver();
+                        }
+                        else {
+                            lastResult.textContent = "Wrong!";
+                            lastResult.style.backgroundColor = "red";
+                            if (userguess < random_number){
+                                lowOrHi.textContent = "Last guess was too low!"
+                            }
+                            else if (userguess > random_number){
+                                lowOrHi.textContent = "Last guess was too high";
+                            }
+                        }
+
+
+                        guessCount++;
+                        guessField.value = "";
+                        guessField.focus();
+                    }
+                    guessSubmit.addEventListener("click", checkguess);
+
+                    function setGameOver(){
+                        guessField.disabled = true;
+                        guessSubmit.disabled = true;
+                        resetButton = document.createElement("button");
+                        resetButton.textContent = "start new game";
+                        document.body.append(resetButton)
+                        resetButton.addEventListner("click",resetGame);
+                    }
+                    function resetGame(){
+                        guessCount = 1;
+
+                        const resetParas = document.querySelectorAll(".resultParas p");
+                        for (const resetPara of resetParas){
+                            resetPara.textContent = "";
+                        } 
+                        resetButton.parentNode.removeChild(resetButton);
+
+                        guessField.disabled = false;
+                        guessSubmit.disabled = false;
+                        guessField.value = "";
+                        guessField.focus();
+
+                        lastResult.style.backgroundColor = "white";
+
+                        random_number = Math.floor(Math.random() * 100) + 1;
+                    }
+
+        
+    </script>
+</body>
+</html>
